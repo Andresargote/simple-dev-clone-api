@@ -1,0 +1,14 @@
+{
+  "name": "dev-clone-api",
+  "version": "1.0.0",
+  "description": "Api de un clon de dev.to",
+  "main": "index.js",
+  "author": "Andres Argote",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.0",
+    "mongoose": "^5.13.0"
+  }
+}
