@@ -15,4 +15,10 @@ const postSchema = new mongoose.Schema({
   },
 });
 
+postSchema.methods.toJSON = function(){
+  const {__v, _id, ...user} = this.toObject();
+  user.id = _id;
+  return user;
+}
+
 module.exports = mongoose.model("Post", postSchema);
