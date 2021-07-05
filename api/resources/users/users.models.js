@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "The password is required"],
   },
+  websiteUrl: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  bio: {
+    typr: String
+  }
 });
 
 userSchema.methods.toJSON = function(){

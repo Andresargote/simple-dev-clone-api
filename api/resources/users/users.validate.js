@@ -5,6 +5,9 @@ const schema = Joi.object({
   name: Joi.string().max(50).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).max(100).required(),
+  websiteUrl: Joi.string().uri(),
+  location: Joi.string().min(3), 
+  bio: Joi.string()
 });
 
 const validateUser = (req, res, next) => {

@@ -4,10 +4,17 @@ const bcryptjs = require("bcryptjs");
 
 const validateUser = require("./users.validate");
 const User = require("./users.models");
-const { createUser } = require("./users.controllers");
+const { getUsers, createUser } = require("./users.controllers");
 
 userRouter.get("/", (req, res) => {
-  return res.send("Users");
+  getUsers()
+    .then((users) => {
+      return res.status(200).json(users);
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.status(500).send("An error occurred while trying to get users");
+    });
 });
 
 userRouter.post("/", validateUser, async (req, res) => {
@@ -25,13 +32,12 @@ userRouter.post("/", validateUser, async (req, res) => {
     return res.status(400).send("The email is already taken");
   }
 
-
   //encriptar
   const salt = bcryptjs.genSaltSync();
   req.body.password = bcryptjs.hashSync(password, salt);
 
   createUser({
-      ...req.body,
+    ...req.body,
   })
     .then((user) => {
       return res.status(201).json(user);

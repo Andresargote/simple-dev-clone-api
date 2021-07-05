@@ -1,5 +1,9 @@
 const User = require("./users.models");
 
+function getUsers(){
+  return User.find();
+}
+
 function createUser(user) {
     const newUser = new User({
     ...user,
@@ -9,5 +13,6 @@ function createUser(user) {
 }
 
 module.exports = {
+  getUsers,
   createUser,
 };

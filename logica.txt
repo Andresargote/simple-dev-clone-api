@@ -15,16 +15,3 @@ Requerimientos:
 -Crear usuario. /api/create/user
 -Logear usuario(jwt). /api/login/user
 
-Andres Alejandro Argote Ballotti
-C.I: 29.670.274
-Número de pasaporte italiano: YA9872586
-Número de pasaporte venezolano: 096146972
-Tipo de sangre: B+
-Tel. +39 379 249 4368
-Dir: Livorno, Via Santa Barbara, 16. Italia
-Altura: 1.77
-Peso: 75.5 Kg
-Talla zapato: 42
-Talla mono: L
-Talla camisa: M
-Resultado destacable: Campeón de los juegos Suramericanos de la Juventud 2017
