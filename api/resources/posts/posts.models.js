@@ -13,12 +13,16 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  creator: {
+    type: String,
+    required: [true, "The post must be associated with a user"],
+  },
 });
 
-postSchema.methods.toJSON = function(){
-  const {__v, _id, ...user} = this.toObject();
-  user.id = _id;
-  return user;
-}
+postSchema.methods.toJSON = function () {
+  const { __v, _id, ...post } = this.toObject();
+  post.id = _id;
+  return post;
+};
 
 module.exports = mongoose.model("Post", postSchema);

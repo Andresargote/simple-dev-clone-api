@@ -8,9 +8,10 @@ function getSpecificPost(id){
   return Post.findById(id)
 }
 
-function createPost(post) {
+function createPost(post, user) {
   const newPost = new Post({
     ...post,
+    creator: user
   });
 
   return newPost.save();

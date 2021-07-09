@@ -100,7 +100,7 @@ userRouter.post("/login", validateLogin, async (req, res) => {
     if (sucess) {
       const token = jwt.sign(
         {
-          id: req.body.id,
+          email: req.body.email
         },
         "estO_ESseCREto",
         {

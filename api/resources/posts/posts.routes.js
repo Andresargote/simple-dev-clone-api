@@ -1,5 +1,8 @@
 const express = require("express");
+const passport = require("passport");
 const postRouter = express.Router();
+
+const jwtAuthenticate = passport.authenticate("jwt", { session: false });
 
 const {
   getPosts,
@@ -46,8 +49,8 @@ postRouter.get("/post/:id", validateId, (req, res) => {
     });
 });
 
-postRouter.post("/post/create", validatePost, (req, res) => {
-  createPost(req.body)
+postRouter.post("/post/create", [jwtAuthenticate, validatePost], (req, res) => {
+  createPost(req.body, req.user.username)
     .then((post) => {
       return res.status(201).json(post);
     })
@@ -60,17 +63,16 @@ postRouter.post("/post/create", validatePost, (req, res) => {
 postRouter.put("/post/update/:id", [validateId, validatePost], (req, res) => {
   updatePost(req.params.id, req.body)
     .then((post) => {
-
-      if(!post) {
+      if (!post) {
         return res.status(404).send("Post not found");
       }
       return res.status(200).json(post);
     })
     .catch((error) => {
       console.error(error);
-      return res.status(500).send("Error trying to update a post")
-    })
-})
+      return res.status(500).send("Error trying to update a post");
+    });
+});
 
 postRouter.delete("/post/delete/:id", validateId, (req, res) => {
   deletePost(req.params.id)
