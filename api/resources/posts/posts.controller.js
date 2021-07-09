@@ -8,6 +8,10 @@ function getSpecificPost(id){
   return Post.findById(id)
 }
 
+function getPostsByUsername(username){
+  return Post.find({creator: username})
+}
+
 function createPost(post, user) {
   const newPost = new Post({
     ...post,
@@ -29,4 +33,4 @@ function deletePost(postId) {
   return Post.findByIdAndRemove(postId);
 }
 
-module.exports = { getPosts, getSpecificPost, createPost, updatePost, deletePost };
+module.exports = { getPosts, getSpecificPost, getPostsByUsername,createPost, updatePost, deletePost };

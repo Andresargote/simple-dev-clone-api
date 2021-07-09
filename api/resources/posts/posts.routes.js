@@ -7,6 +7,7 @@ const jwtAuthenticate = passport.authenticate("jwt", { session: false });
 const {
   getPosts,
   getSpecificPost,
+  getPostsByUsername,
   createPost,
   updatePost,
   deletePost,
@@ -38,6 +39,7 @@ postRouter.get("/", (req, res) => {
 postRouter.get("/post/:id", validateId, (req, res) => {
   getSpecificPost(req.params.id)
     .then((post) => {
+      //en realidad hay que verificar si el usuario existe
       if (!post) {
         return res.status(404).send("Post not found");
       }
@@ -46,6 +48,21 @@ postRouter.get("/post/:id", validateId, (req, res) => {
     .catch((error) => {
       console.error(error);
       return res.status(500).send("Error trying to get a specific post");
+    });
+});
+
+postRouter.get("/posts/:username", (req, res) => {
+  getPostsByUsername(req.params.username)
+    .then((posts) => {
+      if (!posts) {
+        return res.status(404).send("Post not found");
+      }
+
+      return res.status(200).json(posts);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error trying to get posts by username");
     });
 });
 
