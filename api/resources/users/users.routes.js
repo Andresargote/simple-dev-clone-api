@@ -1,7 +1,9 @@
 const express = require("express");
+const passport = require("passport");
 const userRouter = express.Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const jwtAuthenticate = passport.authenticate("jwt", { session: false });
 
 const {
   validateUser,
@@ -118,7 +120,7 @@ userRouter.post("/login", validateLogin, async (req, res) => {
   });
 });
 
-userRouter.put("/update/:username", validateUpdateUser, async (req, res) => {
+userRouter.put("/update/:username", [jwtAuthenticate, validateUpdateUser], async (req, res) => {
   //Validamos que el usuario exista
   try {
     const userExist = await getSpecificUser(req.params.username);
@@ -126,6 +128,11 @@ userRouter.put("/update/:username", validateUpdateUser, async (req, res) => {
     if (!userExist) {
       return res.status(404).send("User not found");
     }
+
+    if(userExist.username !== req.user.username) {
+      return res.status(401).send("You cannot update a user other than you");
+    }
+
   } catch (error) {
     return res.status(500).send("An error occurred obtaining a specific user");
   }
@@ -142,7 +149,7 @@ userRouter.put("/update/:username", validateUpdateUser, async (req, res) => {
     });
 });
 
-userRouter.delete("/delete/:username", async (req, res) => {
+userRouter.delete("/delete/:username", jwtAuthenticate, async (req, res) => {
   //Validamos que el usuario exista
   try {
     const userExist = await getSpecificUser(req.params.username);
@@ -150,15 +157,17 @@ userRouter.delete("/delete/:username", async (req, res) => {
     if (!userExist) {
       return res.status(404).send("User not found");
     }
+
+    if(userExist.username !== req.user.username) {
+      return res.status(401).send("You cannot update a user other than you");
+    }
+
   } catch (error) {
     return res.status(500).send("An error occurred obtaining a specific user");
   }
 
   deleteUser(req.params.username)
     .then((user) => {
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
       return res.status(200).json(user);
     })
     .catch((error) => {

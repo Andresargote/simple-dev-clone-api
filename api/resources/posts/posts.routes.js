@@ -77,32 +77,63 @@ postRouter.post("/post/create", [jwtAuthenticate, validatePost], (req, res) => {
     });
 });
 
-postRouter.put("/post/update/:id", [validateId, validatePost], (req, res) => {
-  updatePost(req.params.id, req.body)
-    .then((post) => {
-      if (!post) {
-        return res.status(404).send("Post not found");
-      }
-      return res.status(200).json(post);
-    })
-    .catch((error) => {
-      console.error(error);
-      return res.status(500).send("Error trying to update a post");
-    });
-});
+postRouter.put("/post/update/:id", [jwtAuthenticate, validateId, validatePost], async (req, res) => {
+    try {
+      const post = await getSpecificPost(req.params.id);
 
-postRouter.delete("/post/delete/:id", validateId, (req, res) => {
-  deletePost(req.params.id)
-    .then((post) => {
       if (!post) {
         return res.status(404).send("Post not found");
       }
-      return res.status(200).json(post);
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).send("Error trying to delete a post");
-    });
-});
+
+      if (post.creator !== req.user.username) {
+        return res
+          .status(401)
+          .send("You can’t update a post that doesn’t belong to you");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error trying to get posts by username");
+    }
+
+    updatePost(req.params.id, req.body)
+      .then((post) => {
+        return res.status(200).json(post);
+      })
+      .catch((error) => {
+        console.error(error);
+        return res.status(500).send("Error trying to update a post");
+      });
+  }
+);
+
+postRouter.delete("/post/delete/:id", [jwtAuthenticate, validateId], async (req, res) => {
+    
+  try {
+      const post = await getSpecificPost(req.params.id);
+
+      if (!post) {
+        return res.status(404).send("Post not found");
+      }
+
+      if (post.creator !== req.user.username) {
+        return res
+          .status(401)
+          .send("You can’t update a post that doesn’t belong to you");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error trying to get posts by username");
+    }
+
+    deletePost(req.params.id)
+      .then((post) => {
+        return res.status(200).json(post);
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.status(500).send("Error trying to delete a post");
+      });
+  }
+);
 
 module.exports = { postRouter };

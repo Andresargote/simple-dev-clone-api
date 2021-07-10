@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.toJSON = function(){
-  const {__v, _id, password, ...user} = this.toObject();
+  const {__v, _id, password, email, ...user} = this.toObject();
   user.id = _id;
   return user;
 }
