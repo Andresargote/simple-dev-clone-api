@@ -7,6 +7,7 @@ const app = express();
 const { postRouter } = require("./api/resources/posts/posts.routes");
 const { userRouter } = require("./api/resources/users/users.routes");
 const jwtStrategy = require("./api/auth/auth");
+const config = require("./config");
 
 passport.use(jwtStrategy);
 app.use(express.json());
@@ -18,6 +19,6 @@ app.use(passport.initialize());
 app.use("/api", postRouter);
 app.use("/api/user", userRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${process.env.PORT}`);
+app.listen(config.port, () => {
+  console.log(`Servidor escuchando en el puerto ${config.port}`);
 });

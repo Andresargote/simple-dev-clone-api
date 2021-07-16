@@ -19,6 +19,7 @@ const {
   createUser,
   deleteUser,
 } = require("./users.controllers");
+const config = require("../../../config");
 
 userRouter.get("/", (req, res) => {
   getUsers()
@@ -104,9 +105,9 @@ userRouter.post("/login", validateLogin, async (req, res) => {
         {
           email: req.body.email
         },
-        "estO_ESseCREto",
+        config.jwt.secret,
         {
-          expiresIn: "24h",
+          expiresIn: config.jwt.experationTime,
         }
       );
 
