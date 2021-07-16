@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Andres Argote",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
