@@ -2,7 +2,7 @@ const environment = process.env.NODE_ENV || "development";
 
 const baseConfig = {
   jwt: {},
-  port: 3000,
+  port: process.env.PORT || 8080,
 };
 
 let environmentConfig = {};
