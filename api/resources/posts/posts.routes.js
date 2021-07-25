@@ -36,7 +36,7 @@ postRouter.get("/", (req, res) => {
     });
 });
 
-postRouter.get("/post/:id", validateId, (req, res) => {
+postRouter.get("/post/:id/:slug", validateId, (req, res) => {
   getSpecificPost(req.params.id)
     .then((post) => {
       //en realidad hay que verificar si el usuario existe

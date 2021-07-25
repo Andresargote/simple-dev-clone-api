@@ -34,6 +34,24 @@ userRouter.get("/", (req, res) => {
     });
 });
 
+//Buscar usuario pasandole un token
+userRouter.get("/token", jwtAuthenticate, (req, res) => {
+  getSpecificUser(req.user.username)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+
+      return res.status(200).json(user);
+    })
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(500)
+        .send("An error occurred obtaining a specific user");
+    });
+});
+
 userRouter.get("/:username", (req, res) => {
   getSpecificUser(req.params.username)
     .then((users) => {
@@ -59,11 +77,11 @@ userRouter.post("/", validateUser, async (req, res) => {
   const emailExists = await User.findOne({ email: email });
 
   if (usernameExists && emailExists) {
-    return res.status(400).send("The username and email are already taken");
+    return res.status(400).json({error: "The username and email are already taken"});
   } else if (usernameExists) {
-    return res.status(400).send("The username is already taken");
+    return res.status(400).json({error: "The username is already taken"});
   } else if (emailExists) {
-    return res.status(400).send("The email is already taken");
+    return res.status(400).json({error: "The email is already taken"});
   }
 
   //encriptar
@@ -78,7 +96,7 @@ userRouter.post("/", validateUser, async (req, res) => {
     })
     .catch((error) => {
       console.error("An attempt to create a user failed", error);
-      return res.status(500).send("An attempt to create a user failed");
+      return res.status(500).json({error: "An attempt to create a user failed"});
     });
 });
 
@@ -89,10 +107,10 @@ userRouter.post("/login", validateLogin, async (req, res) => {
     userExist = await getSpecificUserByEmail(req.body.email);
 
     if (!userExist) {
-      return res.status(404).send("User not found");
+      return res.status(404).json({error: "User not found"});
     }
   } catch (error) {
-    return res.status(500).send("An error occurred obtaining a specific user");
+    return res.status(500).json({error: "An error occurred obtaining a specific user"});
   }
 
   const hashedPassword = userExist.password;
@@ -113,10 +131,10 @@ userRouter.post("/login", validateLogin, async (req, res) => {
 
       console.log("Successfully authenticated user");
 
-      return res.status(200).json({ token });
+      return res.status(200).json({ name: userExist.name, username: userExist.username, token: token });
     } else {
       console.error("Authentication failed");
-      return res.status(400).send("Wrog credentials");
+      return res.status(400).json({error: "Wrong credentials"});
     }
   });
 });

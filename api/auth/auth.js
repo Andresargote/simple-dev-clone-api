@@ -1,10 +1,11 @@
 const passportJWT = require("passport-jwt");
 const User = require("../resources/users/users.models");
 
+const config = require("../../config/index");
 const { getSpecificUserByEmail } = require("../resources/users/users.controllers");
 
 const jwtOptions = {
-  secretOrKey: "estO_ESseCREto",
+  secretOrKey: config.jwt.secret,
   jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
@@ -13,8 +14,6 @@ const jwtStrategy = new passportJWT.Strategy(
   async (jwtPayload, next) => {
     try {
       const user = await getSpecificUserByEmail(jwtPayload.email);
-
-      console.log("Aquii", user)
 
       if (!user) {
         console.error("JWT is not valid");
