@@ -26,9 +26,7 @@ const validatePost = (req, res, next) => {
     );
     return res
       .status(400)
-      .send(
-        `The post must contain a title of max 100 characters and a content. Errors in the request: ${validationsErrors}`
-      );
+      .send({error: `The post must contain a title of max 100 characters and a content. Errors in the request: ${validationsErrors}`});
   }
 };
 

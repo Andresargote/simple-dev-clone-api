@@ -145,15 +145,15 @@ userRouter.put("/update/:username", [jwtAuthenticate, validateUpdateUser], async
     const userExist = await getSpecificUser(req.params.username);
 
     if (!userExist) {
-      return res.status(404).send("User not found");
+      return res.status(404).send({error: "User not found"});
     }
 
     if(userExist.username !== req.user.username) {
-      return res.status(401).send("You cannot update a user other than you");
+      return res.status(401).send({error: "You cannot update a user other than you"});
     }
 
   } catch (error) {
-    return res.status(500).send("An error occurred obtaining a specific user");
+    return res.status(500).send({error: "An error occurred obtaining a specific user"});
   }
 
   updateUser(req.params.username, req.body)
@@ -164,7 +164,7 @@ userRouter.put("/update/:username", [jwtAuthenticate, validateUpdateUser], async
       console.error(error);
       return res
         .status(500)
-        .send("An error occurred updaiting a specific user");
+        .send({error: "An error occurred updaiting a specific user"});
     });
 });
 

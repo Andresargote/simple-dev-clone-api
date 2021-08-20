@@ -4,8 +4,8 @@ function getPosts() {
   return Post.find();
 }
 
-function getSpecificPost(id){
-  return Post.findById(id)
+function getSpecificPost(slug){
+  return Post.findOne({slug: slug});
 }
 
 function getPostsByUsername(username){
@@ -21,16 +21,16 @@ function createPost(post, user) {
   return newPost.save();
 }
 
-function updatePost(id, body) {
-  return Post.findOneAndUpdate({_id: id}, {
+function updatePost(slug, body) {
+  return Post.findOneAndUpdate({slug: slug}, {
     ...body
   }, {
     new: true //la opcion d new es para que la llamada regrese el nuevo documento modificado
   })
 }
 
-function deletePost(postId) {
-  return Post.findByIdAndRemove(postId);
+function deletePost(slug) {
+  return Post.findOneAndDelete({slug: slug});
 }
 
 module.exports = { getPosts, getSpecificPost, getPostsByUsername,createPost, updatePost, deletePost };

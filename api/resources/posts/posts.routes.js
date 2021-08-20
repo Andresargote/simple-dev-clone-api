@@ -36,8 +36,8 @@ postRouter.get("/", (req, res) => {
     });
 });
 
-postRouter.get("/post/:id/:slug", validateId, (req, res) => {
-  getSpecificPost(req.params.id)
+postRouter.get("/post/:slug", (req, res) => {
+  getSpecificPost(req.params.slug)
     .then((post) => {
       //en realidad hay que verificar si el usuario existe
       if (!post) {
@@ -73,65 +73,65 @@ postRouter.post("/post/create", [jwtAuthenticate, validatePost], (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      return res.status(500).send("Error al tratar de crear un post");
+      return res.status(500).send({error: "Error al tratar de crear un post"});
     });
 });
 
-postRouter.put("/post/update/:id", [jwtAuthenticate, validateId, validatePost], async (req, res) => {
+postRouter.put("/post/update/:slug", [jwtAuthenticate, validatePost], async (req, res) => {
     try {
-      const post = await getSpecificPost(req.params.id);
+      const post = await getSpecificPost(req.params.slug);
 
       if (!post) {
-        return res.status(404).send("Post not found");
+        return res.status(404).send({error:"Post not found"});
       }
 
       if (post.creator !== req.user.username) {
         return res
           .status(401)
-          .send("You can’t update a post that doesn’t belong to you");
+          .send({error: "You can’t update a post that doesn’t belong to you"});
       }
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error trying to get posts by username");
+      res.status(500).send({error: "Error trying to get posts by username"});
     }
 
-    updatePost(req.params.id, req.body)
+    updatePost(req.params.slug, req.body)
       .then((post) => {
         return res.status(200).json(post);
       })
       .catch((error) => {
         console.error(error);
-        return res.status(500).send("Error trying to update a post");
+        return res.status(500).send({error: "Error trying to update a post"});
       });
   }
 );
 
-postRouter.delete("/post/delete/:id", [jwtAuthenticate, validateId], async (req, res) => {
+postRouter.delete("/post/delete/:slug", jwtAuthenticate, async (req, res) => {
     
   try {
-      const post = await getSpecificPost(req.params.id);
+      const post = await getSpecificPost(req.params.slug);
 
       if (!post) {
-        return res.status(404).send("Post not found");
+        return res.status(404).send({error: "Post not found"});
       }
 
       if (post.creator !== req.user.username) {
         return res
           .status(401)
-          .send("You can’t update a post that doesn’t belong to you");
+          .send({error: "You can’t update a post that doesn’t belong to you"});
       }
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error trying to get posts by username");
+      res.status(500).send({error: "Error trying to get posts by username"});
     }
 
-    deletePost(req.params.id)
+    deletePost(req.params.slug)
       .then((post) => {
         return res.status(200).json(post);
       })
       .catch((error) => {
         console.log(error);
-        return res.status(500).send("Error trying to delete a post");
+        return res.status(500).send({error: "Error trying to delete a post"});
       });
   }
 );
