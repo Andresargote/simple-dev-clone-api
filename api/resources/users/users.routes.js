@@ -56,7 +56,7 @@ userRouter.get("/:username", (req, res) => {
   getSpecificUser(req.params.username)
     .then((users) => {
       if (!users) {
-        return res.status(404).send("User not found");
+        return res.status(404).send({error: "User not found"});
       }
       return res.status(200).json(users);
     })

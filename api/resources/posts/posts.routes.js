@@ -41,7 +41,7 @@ postRouter.get("/post/:slug", (req, res) => {
     .then((post) => {
       //en realidad hay que verificar si el usuario existe
       if (!post) {
-        return res.status(404).send("Post not found");
+        return res.status(404).send({error: "Post not found", post: []});
       }
       return res.status(200).json(post);
     })

@@ -11,6 +11,7 @@ const schemaUserUpdate = Joi.object({
   websiteUrl: Joi.string().uri(),
   location: Joi.string().min(3),
   bio: Joi.string(),
+  imgUrl: Joi.string().uri()
 });
 
 const schemaLogin = Joi.object({
