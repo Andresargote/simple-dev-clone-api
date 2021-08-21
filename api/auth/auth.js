@@ -1,5 +1,4 @@
 const passportJWT = require("passport-jwt");
-const User = require("../resources/users/users.models");
 
 const config = require("../../config/index");
 const { getSpecificUserByEmail } = require("../resources/users/users.controllers");
