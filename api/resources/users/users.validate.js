@@ -8,10 +8,10 @@ const schema = Joi.object({
 });
 
 const schemaUserUpdate = Joi.object({
-  websiteUrl: Joi.string().uri(),
-  location: Joi.string().min(3),
-  bio: Joi.string(),
-  imgUrl: Joi.string().uri()
+  websiteUrl: Joi.string().allow("").uri(),
+  location: Joi.string().allow(""),
+  bio: Joi.string().allow(""),
+  imgUrl: Joi.string().allow("").uri(),
 });
 
 const schemaLogin = Joi.object({
