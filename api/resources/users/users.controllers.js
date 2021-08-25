@@ -28,8 +28,20 @@ function updateUser(username, body) {
   );
 }
 
-function deleteUser(username){
-  return User.findOneAndRemove({ username: username})
+function deleteUser(username) {
+  return User.findOneAndRemove({ username: username });
+}
+
+function saveUrlImage(username, imgUrl) {
+  return User.findOneAndUpdate(
+    { username: username },
+    {
+      img: imgUrl,
+    },
+    {
+      new: true,
+    }
+  );
 }
 
 module.exports = {
@@ -38,5 +50,6 @@ module.exports = {
   getSpecificUserByEmail,
   updateUser,
   createUser,
-  deleteUser
+  deleteUser,
+  saveUrlImage
 };

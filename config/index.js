@@ -3,6 +3,10 @@ const environment = process.env.NODE_ENV || "development";
 const baseConfig = {
   jwt: {},
   port: process.env.PORT || 8080,
+  S3: {
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY
+  },
 };
 
 let environmentConfig = {};

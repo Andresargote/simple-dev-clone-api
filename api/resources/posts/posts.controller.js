@@ -12,12 +12,14 @@ function getPostsByUsername(username){
   return Post.find({creator: username})
 }
 
-function createPost(post, user) {
+function createPost(post, user, img) {
+
   const newPost = new Post({
     ...post,
-    creator: user
+    creator: user,
+    userImg: img,
   });
-
+  
   return newPost.save();
 }
 

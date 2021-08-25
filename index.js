@@ -14,6 +14,7 @@ const config = require("./config");
 passport.use(jwtStrategy);
 app.use(cors());
 app.use(express.json());
+app.use(express.raw({ type: "image/*", limit: "1mb" }));
 
 dbConnection();
 

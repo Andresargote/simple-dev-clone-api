@@ -25,6 +25,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: [true, "The post must be associated with a user"],
   },
+  userImg: {
+    type: String,
+  }
 });
 
 postSchema.methods.toJSON = function () {

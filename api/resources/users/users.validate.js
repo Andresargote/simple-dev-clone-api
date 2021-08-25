@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const fileType = require("file-type");
 
 const schema = Joi.object({
   username: Joi.string().min(3).max(30).required(),
@@ -18,6 +19,8 @@ const schemaLogin = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(8).max(100).required(),
 });
+
+const CONTENT_TYPES_ALLOWED = ["image/jpeg", "image/jpg", "image/png"];
 
 const validateUser = (req, res, next) => {
   const result = schema.validate(req.body, {
@@ -82,8 +85,46 @@ const validateLogin = (req, res, next) => {
   }
 };
 
+const validateUserImage = async (req, res, next) => {
+  let contentType = req.get("content-type");
+
+  if (!CONTENT_TYPES_ALLOWED.includes(contentType)) {
+    console.warn(
+      `Request to modify the user's [] image does not have a valid content-type [${contentType}]`
+    );
+    return res
+      .status(400)
+      .send(
+        `Files of type ${contentType} are not supported. Use one of ${CONTENT_TYPES_ALLOWED.join(
+          ", "
+        )}`
+      );
+  }
+
+  try {
+    let infoFile = await fileType.fromBuffer(req.body);
+  
+    console.log("-----------------------------------InfoFile", infoFile, req.body);
+    console.log("-----------------------------------ContentType", contentType);
+  
+    if (!CONTENT_TYPES_ALLOWED.includes(infoFile.mime)) {
+      const mensaje = `Disparity between content-type [${contentType}] and file type [${infoFile.ext}]. Request will not be processed`;
+      return res.status(400).send(mensaje);
+    } 
+  
+    req.extensionFile = infoFile.ext;
+  
+    next();
+  }catch(e){
+    console.error(e);
+    return res.status(500).send({error:"An error occurred while trying to process the image"});
+  }
+
+};
+
 module.exports = {
   validateUser,
   validateUpdateUser,
+  validateUserImage,
   validateLogin
 };

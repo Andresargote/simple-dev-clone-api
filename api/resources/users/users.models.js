@@ -26,8 +26,9 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
   },
-  imgUrl: {
+  img: {
     type: String,
+    default: "https://dev-simple-clone.s3.amazonaws.com/default-placeholder.png",
   }
 });
 

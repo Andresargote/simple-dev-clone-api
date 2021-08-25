@@ -22,6 +22,7 @@ const jwtStrategy = new passportJWT.Strategy(
       console.log("JWT is valid");
       next(null, {
         username: user.username,
+        img: user.img,
         id: user.id,
       });
 

@@ -67,7 +67,7 @@ postRouter.get("/posts/:username", (req, res) => {
 });
 
 postRouter.post("/post/create", [jwtAuthenticate, validatePost], (req, res) => {
-  createPost(req.body, req.user.username)
+  createPost(req.body, req.user.username, req.user.img)
     .then((post) => {
       return res.status(201).json(post);
     })
