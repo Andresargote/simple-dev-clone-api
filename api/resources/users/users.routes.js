@@ -213,11 +213,12 @@ userRouter.put("/:username/image",[jwtAuthenticate, validateUserImage], async (r
 
       await saveImage(req.body, nameImage);
 
-      const urlImg = `https://s3.amazonaws/dev-simple-clone/${nameImage}`;
+      const urlImg = `https://s3.amazonaws/dev-clone-upload/${nameImage}`;
       const userAndImage = await saveUrlImage(username, urlImg);
 
       return res.json(userAndImage);
     } catch (error) {
+      console.log("----------------------------erorr----------------------", error)
       return res.status(500).send({error: "An error occurred while trying to save an image"})
     }
   }

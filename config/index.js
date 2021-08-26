@@ -5,7 +5,8 @@ const baseConfig = {
   port: process.env.PORT || 8080,
   S3: {
     accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    region: "us-east-1"
   },
 };
 

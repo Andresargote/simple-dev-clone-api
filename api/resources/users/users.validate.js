@@ -103,9 +103,8 @@ const validateUserImage = async (req, res, next) => {
 
   try {
     let infoFile = await fileType.fromBuffer(req.body);
-  
-    console.log("-----------------------------------InfoFile", infoFile, req.body);
-    console.log("-----------------------------------ContentType", contentType);
+
+    console.log("----------------", infoFile)
   
     if (!CONTENT_TYPES_ALLOWED.includes(infoFile.mime)) {
       const mensaje = `Disparity between content-type [${contentType}] and file type [${infoFile.ext}]. Request will not be processed`;
