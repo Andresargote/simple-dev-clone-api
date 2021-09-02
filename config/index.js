@@ -4,8 +4,8 @@ const baseConfig = {
   jwt: {},
   port: process.env.PORT || 8080,
   S3: {
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: "us-east-1"
   },
 };

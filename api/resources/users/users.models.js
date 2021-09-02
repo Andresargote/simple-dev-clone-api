@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   img: {
     type: String,
-    default: "https://dev-simple-clone.s3.amazonaws.com/default-placeholder.png",
+    default: "https://dev-clone-upload.s3.amazonaws.com/default-placeholder-image.png",
   }
 });
 

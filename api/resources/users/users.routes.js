@@ -210,10 +210,11 @@ userRouter.put("/:username/image",[jwtAuthenticate, validateUserImage], async (r
     try {
       const username = req.params.username;
       const nameImage = `${uuidv4()}.${req.extensionFile}`;
+      console.log("Image ---------", req.extensionFile)
 
-      await saveImage(req.body, nameImage);
+      await saveImage(req.body, nameImage, extensionFile);
 
-      const urlImg = `https://s3.amazonaws/dev-clone-upload/${nameImage}`;
+      const urlImg = `https://dev-clone-upload.s3.amazonaws.com/${nameImage}`;
       const userAndImage = await saveUrlImage(username, urlImg);
 
       return res.json(userAndImage);

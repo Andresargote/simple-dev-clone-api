@@ -103,8 +103,6 @@ const validateUserImage = async (req, res, next) => {
 
   try {
     let infoFile = await fileType.fromBuffer(req.body);
-
-    console.log("----------------", infoFile)
   
     if (!CONTENT_TYPES_ALLOWED.includes(infoFile.mime)) {
       const mensaje = `Disparity between content-type [${contentType}] and file type [${infoFile.ext}]. Request will not be processed`;
@@ -115,7 +113,6 @@ const validateUserImage = async (req, res, next) => {
   
     next();
   }catch(e){
-    console.error(e);
     return res.status(500).send({error:"An error occurred while trying to process the image"});
   }
 

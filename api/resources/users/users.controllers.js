@@ -33,6 +33,9 @@ function deleteUser(username) {
 }
 
 function saveUrlImage(username, imgUrl) {
+
+  console.log("IMGGGG URLL--------------------", imgUrl, "---------------------------");
+
   return User.findOneAndUpdate(
     { username: username },
     {
